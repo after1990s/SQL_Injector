@@ -1,0 +1,25 @@
+1.proxy
+2.truefalse testing
+ // Every FALSE SQL statements will be checked, more statements means a more robust application 
+        String[] falseTest = {"true=false","true%21=true","false%21=false","1=2","1%21=1","2%21=2"};
+        
+        // Every TRUE SQL statements will be checked, more statements means a more robust application 
+        String[] trueTest = {"true=true","false=false","true%21=false","1=1","2=2","1%21=2"};
+3.compare return strings£¬ compare giving strings
+4.get,post.(optional cookie)
+5.user power
+6.dbname, column, 
+
+
+class£º
+stringtool
+
+httpsendrequest
+httprecvrequest
+
+injection->binjection
+	->timeoutinjection
+
+
+proxy
+
