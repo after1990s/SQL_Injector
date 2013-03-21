@@ -1,3 +1,4 @@
+function:
 1.proxy
 2.truefalse testing
  // Every FALSE SQL statements will be checked, more statements means a more robust application 
@@ -12,14 +13,37 @@
 
 
 class£º
-stringtool
+dlg:
+HANDLE m_hInjectHandle;//use for controller
 
-httpsendrequest
-httprecvrequest
+stringtool:
+	???
 
-injection->binjection
+httprequest:
+	send
+	recv
+	initial
+	setproxy
+
+
+injection
+	dlg* ;
+	keystring
+	type
+	url
+	param:param
+	->binjection:
+		tryinject();
+		getpower();
+		gettable();
+		getrow();
+		getdbname();
 	->timeoutinjection
 
 
-proxy
+ViewController:
+	
+
+viewControllerThread;
+
 
