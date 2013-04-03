@@ -97,8 +97,11 @@
     <None Include="ReadMe.txt" />
     <None Include="res\SQL_Injector.ico" />
     <None Include="res\SQL_Injector.rc2" />
+    <None Include="sql设计.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="HTTPRequest.h" />
+    <ClInclude Include="Injectior.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SQL_Injector.h" />
     <ClInclude Include="SQL_InjectorDlg.h" />
@@ -106,6 +109,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="HTTPRequest.cpp" />
+    <ClCompile Include="Injectior.cpp" />
     <ClCompile Include="SQL_Injector.cpp" />
     <ClCompile Include="SQL_InjectorDlg.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -119,4 +124,9 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="SQL_Injector.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

@@ -14,7 +14,10 @@ function:
 
 class：
 dlg:
-HANDLE m_hInjectHandle;//use for controller
+	HANDLE m_hInjectHandle;//use for controller
+	httprequest request;
+
+
 
 stringtool:
 	???
@@ -24,6 +27,9 @@ httprequest:
 	recv
 	initial
 	setproxy
+	先HttpSendRequest
+	然后用HttpQueryInfo 得到Status Code, Content-Length
+	最后InternetReadFile读出来
 
 
 injection

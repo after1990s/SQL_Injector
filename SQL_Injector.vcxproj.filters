@@ -22,6 +22,7 @@
     <None Include="res\SQL_Injector.ico">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="sql设计.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SQL_Injector.h">
@@ -39,6 +40,12 @@
     <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="HTTPRequest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Injectior.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SQL_Injector.cpp">
@@ -48,6 +55,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HTTPRequest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Injectior.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

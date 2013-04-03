@@ -57,12 +57,24 @@ CSQL_InjectorDlg::CSQL_InjectorDlg(CWnd* pParent /*=NULL*/)
 void CSQL_InjectorDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_CHECK_COOKIE, m_bInjectionCookie);
+	DDX_Control(pDX, IDC_CHECK_POST, m_bInjectionGet);
+	DDX_Control(pDX, IDC_CHECK_GET, m_bInjectionPost);
+	DDX_Control(pDX, IDC_CHECK_IEPROXY, m_bInjectionIEProxy);
+	DDX_Control(pDX, IDC_EDITURL, m_ceditURL);
+	DDX_Control(pDX, IDC_EDIT_GET, m_ceditGetPara);
+	DDX_Control(pDX, IDC_EDIT_POST, m_cePostPara);
+	DDX_Control(pDX, IDC_EDIT_COOKIE, m_ceCookiePara);
 }
 
 BEGIN_MESSAGE_MAP(CSQL_InjectorDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_EN_CHANGE(IDC_EDIT1, &CSQL_InjectorDlg::OnEnChangeEdit1)
+	ON_BN_CLICKED(IDC_BTNPROXY, &CSQL_InjectorDlg::OnBnClickedBtnproxy)
+	ON_BN_CLICKED(IDC_RADIO1, &CSQL_InjectorDlg::OnBnClickedRadio1)
+	ON_BN_CLICKED(IDC_BTNSCAN, &CSQL_InjectorDlg::OnBnClickedBtnscan)
 END_MESSAGE_MAP()
 
 
@@ -151,3 +163,74 @@ HCURSOR CSQL_InjectorDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+
+void CSQL_InjectorDlg::OnEnChangeEdit1()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the CDialogEx::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
+}
+
+
+void CSQL_InjectorDlg::OnBnClickedBtnproxy()
+{
+	// TODO: Add your control notification handler code here
+}
+
+
+void CSQL_InjectorDlg::OnBnClickedRadio1()
+{
+	// TODO: Add your control notification handler code here
+}
+
+
+void CSQL_InjectorDlg::OnBnClickedBtnscan()
+{
+	// TODO: Add your control notification handler code here
+	char temp[1024]={0};
+	if (m_ceditURL.GetLine(0, temp, 1024) == 0)
+	{
+		MessageBox(_T("请输入URL"));
+		return;
+	}
+	else
+	{
+		m_stringRawURL = temp;
+		ZeroMemory(temp, sizeof(temp));
+	}
+	if (m_bInjectionCookie.GetCheck() | m_bInjectionGet.GetCheck() | m_bInjectionPost.GetCheck() == false)
+	{
+		MessageBox(_T("请选择注入方式"));
+		return;
+	}
+
+	if (m_bInjectionPost.GetCheck())
+	{
+		if (m_ceditGetPara.GetLine(0, temp, sizeof(temp)) == 0){
+			MessageBox(_T("请填入Post注入参数，以&分割"));
+			return;
+		}
+		m_stringRawPost = temp;
+		ZeroMemory(temp, sizeof(temp));
+	}
+	if (m_bInjectionCookie.GetCheck())
+	{
+		if (m_ceCookiePara.GetLine(0, temp, sizeof(temp)) == 0){
+			MessageBox(_T("请填入cookie注入参数，以&分割"));
+			return;
+		}
+		m_stringRawCookie = temp;
+		ZeroMemory(temp, sizeof(temp));
+	}
+	_beginthread(beginInjectThread, 0, (void*)this);
+
+}
+void beginInjectThread(void *p)
+{
+	CSQL_InjectorDlg *dlg = (CSQL_InjectorDlg*)p;
+
+}
