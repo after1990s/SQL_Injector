@@ -6,6 +6,8 @@
 #include "SQL_Injector.h"
 #include "SQL_InjectorDlg.h"
 #include "afxdialogex.h"
+#include <string>
+using namespace std;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -65,6 +67,8 @@ void CSQL_InjectorDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT_GET, m_ceditGetPara);
 	DDX_Control(pDX, IDC_EDIT_POST, m_cePostPara);
 	DDX_Control(pDX, IDC_EDIT_COOKIE, m_ceCookiePara);
+	//DDX_Control(pDX, IDC_EDIT1, m_cdCompareString);
+	DDX_Control(pDX, IDC_EDIT1, m_ceCompare);
 }
 
 BEGIN_MESSAGE_MAP(CSQL_InjectorDlg, CDialogEx)
@@ -72,8 +76,6 @@ BEGIN_MESSAGE_MAP(CSQL_InjectorDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_EN_CHANGE(IDC_EDIT1, &CSQL_InjectorDlg::OnEnChangeEdit1)
-	ON_BN_CLICKED(IDC_BTNPROXY, &CSQL_InjectorDlg::OnBnClickedBtnproxy)
-	ON_BN_CLICKED(IDC_RADIO1, &CSQL_InjectorDlg::OnBnClickedRadio1)
 	ON_BN_CLICKED(IDC_BTNSCAN, &CSQL_InjectorDlg::OnBnClickedBtnscan)
 END_MESSAGE_MAP()
 
@@ -192,6 +194,9 @@ void CSQL_InjectorDlg::OnBnClickedBtnscan()
 {
 	// TODO: Add your control notification handler code here
 	char temp[1024]={0};
+	//获得对比字符串
+	
+
 	if (m_ceditURL.GetLine(0, temp, 1024) == 0)
 	{
 		MessageBox(_T("请输入URL"));
@@ -202,13 +207,13 @@ void CSQL_InjectorDlg::OnBnClickedBtnscan()
 		m_stringRawURL = temp;
 		ZeroMemory(temp, sizeof(temp));
 	}
-	if (m_bInjectionCookie.GetCheck() | m_bInjectionGet.GetCheck() | m_bInjectionPost.GetCheck() == false)
+	if ((m_bInjectionCookie.GetCheck()==BST_CHECKED | m_bInjectionGet.GetCheck()==BST_CHECKED | m_bInjectionPost.GetCheck()==BST_CHECKED) == false)
 	{
 		MessageBox(_T("请选择注入方式"));
 		return;
 	}
 
-	if (m_bInjectionPost.GetCheck())
+	if (m_bInjectionPost.GetCheck()==BST_CHECKED)
 	{
 		if (m_ceditGetPara.GetLine(0, temp, sizeof(temp)) == 0){
 			MessageBox(_T("请填入Post注入参数，以&分割"));
@@ -217,7 +222,7 @@ void CSQL_InjectorDlg::OnBnClickedBtnscan()
 		m_stringRawPost = temp;
 		ZeroMemory(temp, sizeof(temp));
 	}
-	if (m_bInjectionCookie.GetCheck())
+	if (m_bInjectionCookie.GetCheck()==BST_CHECKED)
 	{
 		if (m_ceCookiePara.GetLine(0, temp, sizeof(temp)) == 0){
 			MessageBox(_T("请填入cookie注入参数，以&分割"));
@@ -226,11 +231,24 @@ void CSQL_InjectorDlg::OnBnClickedBtnscan()
 		m_stringRawCookie = temp;
 		ZeroMemory(temp, sizeof(temp));
 	}
+	m_ceCompare.GetLine(0, temp, sizeof(temp));
+	m_CompareString = temp;
+	ZeroMemory(temp, sizeof(temp));
+	m_InjectClass = 0;
+	if (m_bInjectionCookie.GetCheck())
+		m_InjectClass |= INJECTCLASS::COOKIE;
+	if (m_bInjectionGet.GetCheck())
+		m_InjectClass |= INJECTCLASS::GET;
+	if (m_bInjectionPost.GetCheck())
+		m_InjectClass |= INJECTCLASS::POST;
+
 	_beginthread(beginInjectThread, 0, (void*)this);
 
 }
 void beginInjectThread(void *p)
-{
+{/*分割参数，测试是否有注入，实施注入*/
 	CSQL_InjectorDlg *dlg = (CSQL_InjectorDlg*)p;
-
+	Injector *injector = new Injector(dlg->m_stringRawURL, dlg->m_InjectClass, dlg);
+	injector->TryInject();
+	
 }

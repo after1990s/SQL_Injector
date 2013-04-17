@@ -39,7 +39,7 @@
 
 
 #include <afxsock.h>            // MFC Ì×½Ó×ÖÀ©Õ¹
-
+#include <afxinet.h>
 
 
 
@@ -55,5 +55,8 @@
 #pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #endif
 #endif
-
-
+#include "Injectior.h"
+#include "HTTPRequest.h"
+#include "resource.h"
+enum INJECTCLASS{GET=0x001, POST=0x010, COOKIE=0x100};
+typedef enum INJECTCLASS InjectClass;

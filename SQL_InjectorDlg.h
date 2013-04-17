@@ -3,7 +3,11 @@
 //
 
 #pragma once
+#include "Injectior.h"
 #include "afxwin.h"
+#include <string>
+#include "resource.h"
+using namespace std;
 
 void beginInjectThread(void *p);
 // CSQL_InjectorDlg 对话框
@@ -14,6 +18,7 @@ public:
 	CSQL_InjectorDlg(CWnd* pParent = NULL);	// 标准构造函数
 
 // 对话框数据
+	//           IDD_SQL_INJECTOR_DIALOG
 	enum { IDD = IDD_SQL_INJECTOR_DIALOG };
 
 	protected:
@@ -31,6 +36,8 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
 public:
+	enum INJECTCLASS{GET=0x001, POST=0x010, COOKIE=0x100};
+	static const int GETMASK=0x001, POSTMASK=0x010, COOKIEMASK=0x100;
 	afx_msg void OnEnChangeEdit1();
 	afx_msg void OnBnClickedBtnproxy();
 	afx_msg void OnBnClickedRadio1();
@@ -40,11 +47,18 @@ public:
 	CButton m_bInjectionIEProxy;
 	afx_msg void OnBnClickedBtnscan();
 
-	CString m_stringRawURL;//注入窗口的url值
-	CString m_stringRawPost;
-	CString m_stringRawCookie;
+	string m_stringRawURL;//注入窗口的url值
+	string m_stringRawPost;
+	string m_stringRawCookie;
 	CEdit m_ceditURL;
 	CEdit m_ceditGetPara;
 	CEdit m_cePostPara;
 	CEdit m_ceCookiePara;
+	CEdit m_ceCompareString;
+
+	string m_CompareString;
+
+	int m_InjectClass;
+	CEdit m_ceCompare;
+	
 };
