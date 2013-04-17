@@ -13,11 +13,12 @@ public:
 	static const int GETMASK=0x001, POSTMASK=0x010, COOKIEMASK=0x100;
   //HTTPRequest(string &Dmoain,string &Page, INJECTCLASS method)
 	HTTPRequest(string &Dmoain,string &Page, int method);
+	void setPostDate(string &PostData);
 	string &GetContent();
 private:
 	string m_Content;
 	string m_Domain;
 	string m_Page;
 	string m_PostData;
-	string m_Method;
+	int m_Method;
 };

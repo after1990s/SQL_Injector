@@ -8,6 +8,7 @@ using namespace std;
 class Injector{
 public:
 	static const int GETMASK=0x001, POSTMASK=0x010, COOKIEMASK=0x100;
+	static const int BOOLEANINJECT=1, STRINGINJECT=2;
 	Injector(string &Url, int &injectclass, CSQL_InjectorDlg *csql_injectordlg)
 	{
 		m_Url = Url;
@@ -23,6 +24,7 @@ private:
 	vector<string> m_CookiePara;
 	CSQL_InjectorDlg *m_csql_injectordlg;
 	int m_InjectClass;
+	int m_VulnerabilityClass;//1 for boolean,2 for string
 public:
 	void SeparatePara();/*分离出domain和请求的页面，并从url或Post数据中分割出para参数并保存在m_GetPara*/
 	void TryInject(); /*尝试注入，如果成功则调用GetTableName*/

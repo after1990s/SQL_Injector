@@ -215,7 +215,7 @@ void CSQL_InjectorDlg::OnBnClickedBtnscan()
 
 	if (m_bInjectionPost.GetCheck()==BST_CHECKED)
 	{
-		if (m_ceditGetPara.GetLine(0, temp, sizeof(temp)) == 0){
+		if (m_cePostPara.GetLine(0, temp, sizeof(temp)) == 0){
 			MessageBox(_T("请填入Post注入参数，以&分割"));
 			return;
 		}
@@ -224,7 +224,7 @@ void CSQL_InjectorDlg::OnBnClickedBtnscan()
 	}
 	if (m_bInjectionCookie.GetCheck()==BST_CHECKED)
 	{
-		if (m_ceCookiePara.GetLine(0, temp, sizeof(temp)) == 0){
+		if (m_ceCookiePara.GetLine(1, temp, sizeof(temp)) == 0){
 			MessageBox(_T("请填入cookie注入参数，以&分割"));
 			return;
 		}
