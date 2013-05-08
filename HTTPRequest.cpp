@@ -16,7 +16,7 @@ void HTTPRequest::setPostDate(string &PostData)
 	m_PostData = PostData;
 }
 string & HTTPRequest::GetContent()
-{// 仅仅用于GET方式
+{// 
 	CInternetSession session;
 	session.SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 1000 * 20);
 	session.SetOption(INTERNET_OPTION_CONNECT_BACKOFF, 1000);

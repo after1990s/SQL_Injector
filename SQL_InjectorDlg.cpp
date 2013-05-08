@@ -69,6 +69,8 @@ void CSQL_InjectorDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT_COOKIE, m_ceCookiePara);
 	//DDX_Control(pDX, IDC_EDIT1, m_cdCompareString);
 	DDX_Control(pDX, IDC_EDIT1, m_ceCompare);
+	DDX_Control(pDX, IDC_STATIC_USER, m_csDBUser);
+	DDX_Control(pDX, IDC_STATIC_DBNAME, m_csDBName);
 }
 
 BEGIN_MESSAGE_MAP(CSQL_InjectorDlg, CDialogEx)
@@ -112,6 +114,10 @@ BOOL CSQL_InjectorDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
+	m_ceCompare.SetWindowText(_T("query success"));
+	m_cePostPara.SetWindowText(_T("cols=100&submit=submit"));
+	m_ceditURL.SetWindowText(_T("http://after1990s.info/php/Sql_inject.php"));
+	m_bInjectionPost.SetCheck(true);
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -207,7 +213,7 @@ void CSQL_InjectorDlg::OnBnClickedBtnscan()
 		m_stringRawURL = temp;
 		ZeroMemory(temp, sizeof(temp));
 	}
-	if ((m_bInjectionCookie.GetCheck()==BST_CHECKED | m_bInjectionGet.GetCheck()==BST_CHECKED | m_bInjectionPost.GetCheck()==BST_CHECKED) == false)
+	if ((m_bInjectionCookie.GetCheck()==BST_CHECKED || m_bInjectionGet.GetCheck()==BST_CHECKED || m_bInjectionPost.GetCheck()==BST_CHECKED) == false)
 	{
 		MessageBox(_T("请选择注入方式"));
 		return;
@@ -236,11 +242,11 @@ void CSQL_InjectorDlg::OnBnClickedBtnscan()
 	ZeroMemory(temp, sizeof(temp));
 	m_InjectClass = 0;
 	if (m_bInjectionCookie.GetCheck())
-		m_InjectClass |= INJECTCLASS::COOKIE;
+		m_InjectClass |= COOKIEMASK;
 	if (m_bInjectionGet.GetCheck())
-		m_InjectClass |= INJECTCLASS::GET;
+		m_InjectClass |= GETMASK;
 	if (m_bInjectionPost.GetCheck())
-		m_InjectClass |= INJECTCLASS::POST;
+		m_InjectClass |= POSTMASK;
 
 	_beginthread(beginInjectThread, 0, (void*)this);
 

@@ -1,3 +1,6 @@
+24日任务：
+读出用户和数据库名称
+
 function:
 1.proxy
 2.truefalse testing

@@ -61,4 +61,6 @@ public:
 	int m_InjectClass;
 	CEdit m_ceCompare;
 	
+	CStatic m_csDBUser;
+	CStatic m_csDBName;
 };
