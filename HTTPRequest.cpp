@@ -17,6 +17,7 @@ void HTTPRequest::setPostDate(string &PostData)
 }
 string & HTTPRequest::GetContent()
 {// 
+	try{
 	CInternetSession session;
 	session.SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, 1000 * 20);
 	session.SetOption(INTERNET_OPTION_CONNECT_BACKOFF, 1000);
@@ -76,6 +77,12 @@ string & HTTPRequest::GetContent()
 	}
 	else
 	{
+		return m_Content;
+	}
+	}
+	catch(CInternetException *e)
+	{
+		DWORD dwError = e->m_dwError;
 		return m_Content;
 	}
 }

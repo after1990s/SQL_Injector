@@ -1,0 +1,32 @@
+434321 Semrpvo espguo@gmail.com http://fantuan.yo2.cn 124.79.221.145 2007-10-05 20:38:58 2007-10-05 12:38:58 推出这种服务简直就是对我的摧残！ 
+598736 梦印江南 yooy@live.cn http://www.s-vanz.cn 117.40.230.52 2008-11-02 16:47:15 2008-11-02 08:47:15 慢慢来，，，90后就是想做就做的。。呵呵。。 
+631540 Loki lokixiu@gmail.com http://lokixiu.yo2.cn 221.12.31.98 2008-11-02 17:44:20 2008-11-02 09:44:20 90后？今年多大了？
+============
+回复：18了。 
+634108 name fefe@gmail.com  119.118.102.83 2010-12-07 11:24:01 2010-08-21 12:47:49 free(*list[i]);
+改成free（list［i]);
+
+*list[i]是每一行的首元素，把元素值当成指针释放 
+634109 y450 在linux下调节屏幕亮度 &laquo; after1990s&#039; blog  http://after1990s.info/blog0/?p=634196 97.74.215.191 2010-08-21 05:47:49 2010-12-07 18:16:22 [...] 安装了fedora之后，装上了nvidia的官方驱动，但是和ubuntu下的一样，fn快捷键不能调节屏幕亮度（关于ubuntu调节亮度的问题点这里），然后我找啊找啊找，找到了一个在fedora下可以调节屏幕亮度的方法： xgamma -gamma 0.5 后面那个数字从0.1到10.0。你看着办把。 [...]  
+634121 JudahXIII JudahXIII@gmail.com http://after1990s.blogger.com 123.147.184.142 2011-01-31 09:01:07 2010-12-07 18:24:01 我勒个去，这东西实在啊 
+634130 Cloudream cloudream@gmail.com 
+634175 After1990s navi.zh@gmail.com http://www.home-businessreviews.com/Surveys-For-Money.html 89.248.168.40 2011-01-12 16:59:02 2011-01-31 16:01:07 <strong>After1990s...</strong>
+
+[...] something about after1990s[...]... 
+634183 Navi richard.saltzman556@gmail.com http://xrumerservice.org 204.152.222.252 2010-12-07 11:16:22 2011-03-17 14:46:46 哈哈，你太逗了，EOF宏是－1，文件结尾不是需要你写进去的，你这样实际上是把－1截断成0xff写入文件里面了，如果你读该文件的话，最后一个字节就是0xff，再读才会返回真正的文件结束标记EOF，说bug太草率了 
+634201 Richard ricardoandersonnntm@gmail.com http://onexcrematory.com 46.109.204.68 2011-03-17 07:46:46 2011-07-31 07:14:12 你好。不知道可否告诉我你的邮箱，关于BYTECODE有一些事情想问一下。谢谢 
+634217 Uncoryionibre helloping1980@gmail.com http://cialis-rezeptfrei-de.com 46.109.198.20 2012-04-04 02:30:54 2012-03-12 06:59:13 If you want to make $20-$50/hour and up to $3500/month  of your time working at 
+home part-time then this is the most important message  you’re ever going to read... 
+ 
+It may sound hard to believe, but it's true.  There are thousands of companies out there who are willing to pay for your opinions regarding their products.  This is an important part of product research, and they rely on people just like you for your honest opinion! 
+ 
+Imagine getting paid for doing things like: 
+ 
+- Trying out new menu items from popular restaurants 
+- Take short surveys about new cars that are coming out soon 
+- Give your opinion about new clothing and shoe designs 
+But here's a problem, it's very hard to find out best survey site and you probably can waste too much time but I just stumbled up  <a href="http://www.home-businessreviews.com/Surveys-For-Money.html" rel="nofollow">this article</a> where this guy revealed his secret source where he registered and taking surveys in his free time and earning $3000-$4000/month 
+ 
+Click Here To read this amazing  story : 
+http://www.home-businessreviews.com/Surveys-For-Money.html 
+634249 April jasonalbetortt24@gmail.com http://increase-your-website-traffic.com 46.251.237.94 2012-03-12 06:59:13 2012-03-17 07:57:15 Get up to 100000 forum backlinks with our backlinks service &amp; massive targeted traffic Get large online web traffic using amazing backlink blast available. We can post your marketing post up to 100’000 forums worldwide, get insane amount of backlinks and great targeted online web traffic in very short time. Most affordable and most powerful service for web traffic and backlinks in the world!!!! Your post will be published u

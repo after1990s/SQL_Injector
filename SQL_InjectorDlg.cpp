@@ -71,6 +71,8 @@ void CSQL_InjectorDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT1, m_ceCompare);
 	DDX_Control(pDX, IDC_STATIC_USER, m_csDBUser);
 	DDX_Control(pDX, IDC_STATIC_DBNAME, m_csDBName);
+	DDX_Control(pDX, IDC_LIST3, m_listboxTable);
+	DDX_Control(pDX, IDC_BUTTON1, m_btnExportTable);
 }
 
 BEGIN_MESSAGE_MAP(CSQL_InjectorDlg, CDialogEx)
@@ -79,6 +81,8 @@ BEGIN_MESSAGE_MAP(CSQL_InjectorDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_EN_CHANGE(IDC_EDIT1, &CSQL_InjectorDlg::OnEnChangeEdit1)
 	ON_BN_CLICKED(IDC_BTNSCAN, &CSQL_InjectorDlg::OnBnClickedBtnscan)
+	
+	ON_BN_CLICKED(IDC_BUTTON_EXPORT, &CSQL_InjectorDlg::OnBnClickedButtonExport)
 END_MESSAGE_MAP()
 
 
@@ -255,6 +259,39 @@ void beginInjectThread(void *p)
 {/*分割参数，测试是否有注入，实施注入*/
 	CSQL_InjectorDlg *dlg = (CSQL_InjectorDlg*)p;
 	Injector *injector = new Injector(dlg->m_stringRawURL, dlg->m_InjectClass, dlg);
+	dlg->m_pInjector = injector;
 	injector->TryInject();
+	
+}
+
+void ExportTalbe(void *p)
+{
+	CSQL_InjectorDlg *dlg = (CSQL_InjectorDlg*)p;
+	dlg->m_pInjector->ExportTable(dlg->m_ExportTableName, dlg->m_ExtportTableFile);
+}
+
+void CSQL_InjectorDlg::OnBnClickedButtonExport()
+{
+	// TODO: Add your control notification handler code here
+	//获得导出的表名
+	int iSel = 0;
+	if ((iSel = m_listboxTable.GetCurSel()) == LB_ERR)
+	{
+		MessageBox(_T("选择一个表导出"),_T("提示"),NULL);
+		return;
+	}
+	TCHAR tmp[1024]={0};
+	m_listboxTable.GetText(iSel, tmp);
+	m_ExportTableName = tmp;
+	//选择导出文件
+	char szFilter[]="Text files(*.txt)|*.txt";
+	CFileDialog dlg(1,NULL,NULL,NULL,szFilter);
+	if(dlg.DoModal()==IDOK) 
+	{
+		m_ExtportTableFile = dlg.GetPathName();
+		_beginthread(ExportTalbe,0, (void*)this);
+	}
+	
+	
 	
 }

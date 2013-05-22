@@ -58,5 +58,7 @@
 #include "Injectior.h"
 #include "HTTPRequest.h"
 #include "resource.h"
+#include <stdlib.h>
+#include <stdio.h>
 enum INJECTCLASS{GET=0x001, POST=0x010, COOKIE=0x100};
 typedef enum INJECTCLASS InjectClass;
