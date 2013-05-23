@@ -62,7 +62,7 @@ void CSQL_InjectorDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CHECK_COOKIE, m_bInjectionCookie);
 	DDX_Control(pDX, IDC_CHECK_POST, m_bInjectionGet);
 	DDX_Control(pDX, IDC_CHECK_GET, m_bInjectionPost);
-	DDX_Control(pDX, IDC_CHECK_IEPROXY, m_bInjectionIEProxy);
+	//DDX_Control(pDX, IDC_CHECK_IEPROXY, m_bInjectionIEProxy);
 	DDX_Control(pDX, IDC_EDITURL, m_ceditURL);
 	DDX_Control(pDX, IDC_EDIT_GET, m_ceditGetPara);
 	DDX_Control(pDX, IDC_EDIT_POST, m_cePostPara);
@@ -72,7 +72,8 @@ void CSQL_InjectorDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STATIC_USER, m_csDBUser);
 	DDX_Control(pDX, IDC_STATIC_DBNAME, m_csDBName);
 	DDX_Control(pDX, IDC_LIST3, m_listboxTable);
-	DDX_Control(pDX, IDC_BUTTON1, m_btnExportTable);
+	DDX_Control(pDX, IDC_BUTTON_EXPORT,m_btnExportTable);
+	DDX_Control(pDX, IDC_LIST1, m_clistboxMsg);
 }
 
 BEGIN_MESSAGE_MAP(CSQL_InjectorDlg, CDialogEx)
@@ -120,7 +121,7 @@ BOOL CSQL_InjectorDlg::OnInitDialog()
 	// TODO: 在此添加额外的初始化代码
 	m_ceCompare.SetWindowText(_T("query success"));
 	m_cePostPara.SetWindowText(_T("cols=100&submit=submit"));
-	m_ceditURL.SetWindowText(_T("http://after1990s.info/php/Sql_inject.php"));
+	m_ceditURL.SetWindowText(_T("http://localhost/php/inject.php"));
 	m_bInjectionPost.SetCheck(true);
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
@@ -260,6 +261,9 @@ void beginInjectThread(void *p)
 	CSQL_InjectorDlg *dlg = (CSQL_InjectorDlg*)p;
 	Injector *injector = new Injector(dlg->m_stringRawURL, dlg->m_InjectClass, dlg);
 	dlg->m_pInjector = injector;
+	dlg->m_clistboxMsg.ResetContent();
+	dlg->m_listboxTable.ResetContent();
+	dlg->m_clistboxMsg.InsertString(-1,_T("开始检测"));
 	injector->TryInject();
 	
 }

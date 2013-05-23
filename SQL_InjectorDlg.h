@@ -45,7 +45,7 @@ public:
 	CButton m_bInjectionCookie;
 	CButton m_bInjectionGet;
 	CButton m_bInjectionPost;
-	CButton m_bInjectionIEProxy;
+	//CButton m_bInjectionIEProxy;
 	afx_msg void OnBnClickedBtnscan();
 
 	string m_stringRawURL;//注入窗口的url值
@@ -71,4 +71,5 @@ public:
 	string m_ExtportTableFile;//保存导出数据的文件名
 	
 	afx_msg void OnBnClickedButtonExport();
+	CListBox m_clistboxMsg;
 };

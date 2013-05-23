@@ -11,7 +11,7 @@ HTTPRequest::HTTPRequest(string &Dmoain,string &Page,int method)
 	m_Method = method;
 	m_PostData = "";
 }
-void HTTPRequest::setPostDate(string &PostData)
+void HTTPRequest::setPostData(string &PostData)
 {
 	m_PostData = PostData;
 }
@@ -85,4 +85,5 @@ string & HTTPRequest::GetContent()
 		DWORD dwError = e->m_dwError;
 		return m_Content;
 	}
+
 }
